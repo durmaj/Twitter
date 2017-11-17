@@ -34,14 +34,7 @@ if($uri === "/register") {
     if($method === "GET") {
         echo $controller->showRegister();die;
     } elseif($method === "POST") {
-
-        try {
-            echo $controller->createUser();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-        die;
-
+        return $controller->createUser();
 
     }
 }

@@ -23,6 +23,11 @@ class Controller
     {
         DB::init();
 
+        if ($_SESSION['errors'] == "wrongPass"){
+            echo "Wrong Password";
+            unset($_SESSION['errors']);
+        }
+
         if(isset($_SESSION["user"])) {
             $user = User::loadById(DB::$conn, $_SESSION["user"]);
             return $this->render('profile',$user->toArray());
@@ -60,6 +65,21 @@ class Controller
 
         if(isset($_SESSION["user"])) {
             $user = User::loadById(DB::$conn, $_SESSION["user"]);
+            $formData = [
+                $_POST['email'],
+                $_POST['pass'],
+            ];
+
+//            var_dump($user->getPass());die();
+
+            if (!password_verify($_POST['oldPass'], $user->getPass()) || strlen($_POST['oldPass']) < 1)
+            {
+                $_SESSION['errors']="wrongPass";
+                return $this->showProfile();
+            } else {
+                echo "zalogowany";
+                die();
+            }
             $user->setEmail($_POST["email"]);
             $user->saveToDB(DB::$conn);
             return $this->showProfile();
@@ -105,6 +125,7 @@ class Controller
 
         $_SESSION["user"] = $user->getId();
 
-        return $this->showProfile();
+        header('Location: /profile');
+        return;
     }
 }
