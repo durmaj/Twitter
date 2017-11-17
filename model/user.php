@@ -6,23 +6,22 @@ class User
     private $email;
     private $pass;
 
+
     public function getId()
     {
         return $this->id;
     }
-
 
     public function getEmail()
     {
         return $this->email;
     }
 
-    public function setEmail($email)
+     public function setEmail($email)
     {
         $this->email = $email;
         return $this;
     }
-
 
     public function getPass()
     {
@@ -31,57 +30,81 @@ class User
 
     public function setPass($pass)
     {
-        $this->pass = password_hash($pass, PASSWORD_BCRYPT,['cost'=>11]);
+        $this->pass = password_hash($pass,PASSWORD_BCRYPT,['cost'=>11]);
         return $this;
     }
 
     public function setDirectPass($pass)
     {
-        $this->pass = $pass;
-        return $this;
+        $this->pass = $pass; return $this;
     }
 
-
-    public function saveToDB(\PDO $conn)
-    {
-
+    public function saveToDB(\PDO $conn) {
+// for new user - create profile
         if(!$this->getId()) {
-            $stmt = $conn->prepare('INSERT INTO user (email, pass) VALUES (:email, :pass)');
-
+            $stmt = $conn->prepare(
+                'INSERT INTO user (email, pass) VALUES (:email, :pass)'
+            );
             $res = $stmt->execute([
                 'email' => $this->getEmail(),
-                'pass' =>$this->getPass()
+                'pass' => $this->getPass()
             ]);
-
-            if ($res !== false) {
+            if($res !== false) {
                 $this->id = $conn->lastInsertId();
                 return true;
             }
+        } else {
+// for existing user - update data
+            $stmt =$conn->prepare(
+                'UPDATE user SET email=:email, pass=:pass WHERE id=:id'
+            );
+            $res = $stmt->execute([
+                'email' => $this->getEmail(),
+                'pass' => $this->getPass(),
+                'id' => $this->getId()
+            ]);
+            return (bool) $res;
         }
         return false;
     }
 
+//get user by id
     static public function loadById(\PDO $conn, $id) {
-            $stmt = $conn->prepare('SELECT * FROM user WHERE id=:id');
-            $res = $stmt->execute(['id'=>$id]);
-            if($res && $stmt->rowCount() > 0) {
-                $row = $stmt->fetch();
-                $user = new User();
-                $user->id =  (int) $row["id"];
-                $user->setEmail($row["email"])
-                        ->setDirectPass($row["pass"]);
-                return $user;
-
-            }
-            return null;
+        $stmt = $conn->prepare('SELECT * FROM user WHERE id=:id');
+        $res = $stmt->execute(['id'=>$id]);
+        if($res && $stmt->rowCount() > 0) {
+            $row = $stmt->fetch();
+            $user = new User();
+            $user->id = $row["id"];
+            $user->setEmail($row["email"])
+                ->setDirectPass($row["pass"]);
+            return $user;
+        }
+        return null;
     }
 
+//get user by email
+    static public function loadByEmail(\PDO $conn, $email) {
+        $stmt = $conn->prepare('SELECT * FROM user WHERE email=:email');
+        $res = $stmt->execute(['email'=>$email]);
+        if($res && $stmt->rowCount() > 0) {
+            $row = $stmt->fetch();
+            $user = new User();
+            $user->id = $row["id"];
+            $user->setEmail($row["email"])
+                ->setDirectPass($row["pass"]);
+            return $user;
+        }
+        return null;
+    }
+
+//get all users
     static public function loadAll(\PDO $conn) {
         $stmt = $conn->query('SELECT * FROM user');
         $res = [];
         foreach ($stmt->fetchAll() as $row) {
             $user = new User();
-            $user->id =  (int) $row["id"];
+            $user->id = $row["id"];
             $user->setEmail($row["email"])
                 ->setDirectPass($row["pass"]);
             $res[] = $user;
@@ -89,6 +112,7 @@ class User
         return $res;
     }
 
+//delete user
     public function delete(\PDO $conn) {
         if($this->getId()) {
             $stmt = $conn->prepare('DELETE FROM user WHERE id=:id');
@@ -99,5 +123,13 @@ class User
             }
         }
         return false;
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'email' => $this->getEmail()
+        ];
     }
 }
