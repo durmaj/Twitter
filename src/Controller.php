@@ -27,8 +27,7 @@ class Controller
             $user = User::loadById(DB::$conn, $_SESSION["user"]);
             return $this->render('profile',$user->toArray());
         } else {
-            header("Location: /login");
-            return "";
+            return $this->showLogin();
         }
 
     }
@@ -39,7 +38,7 @@ class Controller
 
         $email = $_POST["email"];
         $plain =$_POST["pass"];
-        if(strlen($email) * strlen($plain) === 0) {
+        if(strlen($email) ===0 || strlen($plain) === 0) {
             throw new \Exception("Pass and email cannot be empty");
         }
 
@@ -65,7 +64,7 @@ class Controller
             $user->saveToDB(DB::$conn);
             return $this->showProfile();
         }
-        header("Location: /login");return"";
+        return $this->showLogin();
     }
 
     public function logout() {
@@ -74,6 +73,11 @@ class Controller
     }
 
     public function showRegister() {
+        if ($_SESSION['errors'] === "userExists")
+        {
+            echo "User exists";
+            unset($_SESSION['errors']);
+        }
         return $this->render('register');
     }
 
@@ -81,9 +85,17 @@ class Controller
     {
         DB::init();
 
-        $user = (new User())
-            ->setEmail($_POST['email'])
-            ->setPass($_POST["pass"]);
+
+        $userCheck = User::loadByEmail(DB::$conn, $_POST['email']);
+        if ($userCheck != null)
+        {
+            $_SESSION['errors']="userExists";
+            return $this->showRegister();
+        }
+
+        $user = new User;
+
+        $user->setEmail($_POST['email'])->setPass($_POST["pass"]);
 
         try {
             $user->saveToDB(DB::$conn);

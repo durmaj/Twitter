@@ -43,7 +43,7 @@ class User
 // for new user - create profile
         if(!$this->getId()) {
             $stmt = $conn->prepare(
-                'INSERT INTO user (email, pass) VALUES (:email, :pass)'
+                'INSERT INTO users (email, pass) VALUES (:email, :pass)'
             );
             $res = $stmt->execute([
                 'email' => $this->getEmail(),
@@ -56,7 +56,7 @@ class User
         } else {
 // for existing user - update data
             $stmt =$conn->prepare(
-                'UPDATE user SET email=:email, pass=:pass WHERE id=:id'
+                'UPDATE users SET email=:email, pass=:pass WHERE id=:id'
             );
             $res = $stmt->execute([
                 'email' => $this->getEmail(),
@@ -70,7 +70,7 @@ class User
 
 //get user by id
     static public function loadById(\PDO $conn, $id) {
-        $stmt = $conn->prepare('SELECT * FROM user WHERE id=:id');
+        $stmt = $conn->prepare('SELECT * FROM users WHERE id=:id');
         $res = $stmt->execute(['id'=>$id]);
         if($res && $stmt->rowCount() > 0) {
             $row = $stmt->fetch();
@@ -85,7 +85,7 @@ class User
 
 //get user by email
     static public function loadByEmail(\PDO $conn, $email) {
-        $stmt = $conn->prepare('SELECT * FROM user WHERE email=:email');
+        $stmt = $conn->prepare('SELECT * FROM users WHERE email=:email');
         $res = $stmt->execute(['email'=>$email]);
         if($res && $stmt->rowCount() > 0) {
             $row = $stmt->fetch();
@@ -100,7 +100,7 @@ class User
 
 //get all users
     static public function loadAll(\PDO $conn) {
-        $stmt = $conn->query('SELECT * FROM user');
+        $stmt = $conn->query('SELECT * FROM users');
         $res = [];
         foreach ($stmt->fetchAll() as $row) {
             $user = new User();
@@ -115,7 +115,7 @@ class User
 //delete user
     public function delete(\PDO $conn) {
         if($this->getId()) {
-            $stmt = $conn->prepare('DELETE FROM user WHERE id=:id');
+            $stmt = $conn->prepare('DELETE FROM users WHERE id=:id');
             $res = $stmt->execute(['id'=>$this->getId()]);
             if($res) {
                 $this->id = null;

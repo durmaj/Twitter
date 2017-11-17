@@ -16,7 +16,7 @@ class Tweet
     }
 
     static public function loadTweetsByUserID(\PDO $conn, $userID) {
-        $stmt = $conn->prepare('SELECT * FROM user WHERE id=:userID');
+        $stmt = $conn->prepare('SELECT * FROM users WHERE id=:userID');
         $res = $stmt->execute(['userID'=>$userID]);
         if($res && $stmt->rowCount() > 0) {
             $row = $stmt->fetch();
