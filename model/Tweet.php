@@ -15,34 +15,55 @@ class Tweet
         $this->creationDate = null;
     }
 
-    static public function loadAllTweets(\PDO $conn) {
+    static public function loadAllTweets(\PDO $conn)
+    {
         $stmt = $conn->query('SELECT * FROM tweets ORDER BY creationDate DESC');
         $res = [];
         foreach ($stmt->fetchAll() as $row) {
             $tweet = new Tweet();
             $tweet->id = $row["id"];
-            $tweet->setUserID($row["userID"])
-                ->setText($row["text"])
-                ->setCreationDate($row["creationDate"]);
+            $tweet->setUserID($row["userID"]);
+            $tweet->setText($row["text"]);
+            $tweet->setCreationDate($row["creationDate"]);
             $res[] = $tweet;
         }
-        var_dump($res);
         return $res;
     }
 
-    static public function loadTweetsByUserID(\PDO $conn, $userID) {
-        $stmt = $conn->prepare('SELECT * FROM tweets WHERE id=:userID');
-        $res = $stmt->execute(['userID'=>$userID]);
-        if($res && $stmt->rowCount() > 0) {
-            $row = $stmt->fetch();
-            $tweet = new Tweet();
-            $tweet->id = $row["id"];
-            $tweet->setEmail($row["email"])
-                ->setDirectPass($row["pass"]);
-            return $tweet;
-        }
-        return null;
+    public function saveToDB(\PDO $conn)
+    {
+        if(isset($_SESSION['user']))
+        {
+            $stmt = $conn->prepare(
+                'INSERT INTO tweets (userID, text, creationDate) VALUES (:userID, :text, :creationDate)'
+            );
+            $res = $stmt->execute([
+                'userID' => $this->getUserID(),
+                'text' => $this->getText(),
+                'creationDate' => $this->getCreationDate()
+            ]);
+            if($res !== false)
+            {
+                $this->id = $conn->lastInsertId();
+                return true;
+            }
+        } return false;
     }
+
+
+//    static public function loadTweetsByUserID(\PDO $conn, $userID) {
+//        $stmt = $conn->prepare('SELECT * FROM tweets WHERE id=:userID');
+//        $res = $stmt->execute(['userID'=>$userID]);
+//        if($res && $stmt->rowCount() > 0) {
+//            $row = $stmt->fetch();
+//            $tweet = new Tweet();
+//            $tweet->id = $row["id"];
+//            $tweet->setEmail($row["email"])
+//                ->setDirectPass($row["pass"]);
+//            return $tweet;
+//        }
+//        return null;
+//    }
 
 // getters & setters
 
@@ -81,14 +102,14 @@ class Tweet
         $this->creationDate = $creationDate;
     }
 
-    public function toArray()
-    {
-        return [
-            'id' => $this->getId(),
-            'userID' => $this->getUserID(),
-            'text' => $this->getText(),
-            'creationDate' => $this->getCreationDate()
-        ];
-    }
+//    public function tweetsToArray()
+//    {
+//        return [
+//            'id' => $this->getId(),
+//            'userID' => $this->getUserID(),
+//            'text' => $this->getText(),
+//            'creationDate' => $this->getCreationDate()
+//        ];
+//    }
 
 }

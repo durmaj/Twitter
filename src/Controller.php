@@ -142,7 +142,9 @@ class Controller
     public function mainPage()
     {
         if(isset($_SESSION["user"])) {
-            return $this->render('main');
+            $html = $this->showAllTweets();
+            $html .= $this->render('newTweet');
+            return $html;
         } else {
             header('Location: /login');
             return;
@@ -151,15 +153,44 @@ class Controller
 
     public function showAllTweets()
     {
+
         DB::init();
-
-        $allTweets = Tweet::loadAllTweets(DB::$conn);
-        var_dump($allTweets);die();
-
+        $html = "<table><tbody><tr><th>User</th><th>Tweet</th><th>Date</th></tr>";
+        $tweets = Tweet::loadAllTweets(DB::$conn);
+        foreach ($tweets as $tweet) {
+            $html .= "<tr><td>";
+            $html .= User::loadById(DB::$conn,$tweet->getUserId())->getEmail();
+            $html .= "</td>";
+            $html .= "<td><a href=comment.php?tweet=".$tweet->getId().">";
+            $html .= $tweet->getText();
+            $html .= "</a></td><td>";
+            $html .= $tweet->getCreationDate();
+            $html .= "</td></tr>";
+        }
+        $html .= "</tbody></table>";
+        return $html;
 
 
     }
 
+    public function createTweet()
+    {
+        var_dump($_SESSION["user"]);
+        DB::init();
+
+        $tweet = new Tweet;
+
+        $tweet->setText($_POST['text']);
+        $tweet->setUserID($_SESSION["user"]);
+        $tweet->setCreationDate(date("Y-m-d H:i:s"));
+        var_dump($tweet);
+        if (isset($_POST['newTweet']))
+        {
+            $tweet->saveToDB(DB::$conn);
+        }
+
+
+    }
 
 
 
