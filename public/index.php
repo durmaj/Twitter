@@ -45,9 +45,7 @@ if($uri === "/logout") {
 }
 
 if($uri === "/") {
-    if($method === "GET") {
-        echo "NOT IMPLEMENTED";die;
-    }
+    echo $controller->mainPage();die();
 }
 
 

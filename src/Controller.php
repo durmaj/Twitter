@@ -2,6 +2,7 @@
 
 require_once __DIR__."/DB.php";
 require_once __DIR__."/../model/User.php";
+require_once __DIR__."/../model/Tweet.php";
 session_start();
 
 class Controller
@@ -54,7 +55,8 @@ class Controller
 
         if(password_verify($plain,$user->getPass())) {
             $_SESSION["user"] = $user->getId();
-            return $this->showProfile();
+            header('Location: /');
+            return;
         } else {
             return "no";
         }
@@ -96,7 +98,8 @@ class Controller
 
     public function logout() {
         session_unset();
-        return $this->showLogin();
+        header('Location: /login');
+        return;
     }
 
     public function showRegister() {
@@ -135,4 +138,30 @@ class Controller
         header('Location: /profile');
         return;
     }
+
+    public function mainPage()
+    {
+        if(isset($_SESSION["user"])) {
+            return $this->render('main');
+        } else {
+            header('Location: /login');
+            return;
+        }
+    }
+
+    public function showAllTweets()
+    {
+        DB::init();
+
+        $allTweets = Tweet::loadAllTweets(DB::$conn);
+        var_dump($allTweets);die();
+
+
+
+    }
+
+
+
+
+
 }

@@ -15,8 +15,23 @@ class Tweet
         $this->creationDate = null;
     }
 
+    static public function loadAllTweets(\PDO $conn) {
+        $stmt = $conn->query('SELECT * FROM tweets ORDER BY creationDate DESC');
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tweet = new Tweet();
+            $tweet->id = $row["id"];
+            $tweet->setUserID($row["userID"])
+                ->setText($row["text"])
+                ->setCreationDate($row["creationDate"]);
+            $res[] = $tweet;
+        }
+        var_dump($res);
+        return $res;
+    }
+
     static public function loadTweetsByUserID(\PDO $conn, $userID) {
-        $stmt = $conn->prepare('SELECT * FROM users WHERE id=:userID');
+        $stmt = $conn->prepare('SELECT * FROM tweets WHERE id=:userID');
         $res = $stmt->execute(['userID'=>$userID]);
         if($res && $stmt->rowCount() > 0) {
             $row = $stmt->fetch();
@@ -66,7 +81,14 @@ class Tweet
         $this->creationDate = $creationDate;
     }
 
-
-
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'userID' => $this->getUserID(),
+            'text' => $this->getText(),
+            'creationDate' => $this->getCreationDate()
+        ];
+    }
 
 }
