@@ -67,10 +67,6 @@ class Controller
 
         if(isset($_SESSION["user"])) {
             $user = User::loadById(DB::$conn, $_SESSION["user"]);
-//            $formData = [
-//                $_POST['email'],
-//                $_POST['pass'],
-//            ];
 
             if (!password_verify($_POST['oldPass'], $user->getPass()) || strlen($_POST['oldPass']) < 1)
             {
@@ -175,19 +171,29 @@ class Controller
 
     public function createTweet()
     {
-        var_dump($_SESSION["user"]);
         DB::init();
 
-        $tweet = new Tweet;
-
+        $tweet = new Tweet();
+        $tweet->create();
         $tweet->setText($_POST['text']);
         $tweet->setUserID($_SESSION["user"]);
         $tweet->setCreationDate(date("Y-m-d H:i:s"));
-        var_dump($tweet);
-        if (isset($_POST['newTweet']))
-        {
+
+        if (isset($_POST['tweet'])) {
             $tweet->saveToDB(DB::$conn);
+            echo "Tweet added";die;
+            return $this->showAllTweets();
         }
+
+//        try {
+//            $tweet->saveToDB(DB::$conn);
+//        } catch (\Exception $e) {
+//            return $e->getMessage();
+//        }
+
+        header("location: /");
+
+
 
 
     }

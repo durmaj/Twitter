@@ -45,7 +45,9 @@ if($uri === "/logout") {
 }
 
 if($uri === "/") {
-    echo $controller->mainPage();die();
+    echo $controller->mainPage();
+    echo $controller->createTweet();
+
 }
 
 

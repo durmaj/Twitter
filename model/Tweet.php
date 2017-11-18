@@ -37,17 +37,23 @@ class Tweet
             $stmt = $conn->prepare(
                 'INSERT INTO tweets (userID, text, creationDate) VALUES (:userID, :text, :creationDate)'
             );
-            $res = $stmt->execute([
+            $tweet = [
                 'userID' => $this->getUserID(),
                 'text' => $this->getText(),
                 'creationDate' => $this->getCreationDate()
-            ]);
-            if($res !== false)
-            {
-                $this->id = $conn->lastInsertId();
-                return true;
-            }
+            ];
+            $stmt->execute($tweet);
         } return false;
+    }
+
+    public function create()
+    {
+        $tweet = new Tweet;
+
+        $tweet->setText($_POST['text']);
+        $tweet->setUserID($_SESSION["user"]);
+        $tweet->setCreationDate(date("Y-m-d H:i:s"));
+
     }
 
 
