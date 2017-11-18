@@ -65,24 +65,31 @@ class Controller
 
         if(isset($_SESSION["user"])) {
             $user = User::loadById(DB::$conn, $_SESSION["user"]);
-            $formData = [
-                $_POST['email'],
-                $_POST['pass'],
-            ];
-
-//            var_dump($user->getPass());die();
+//            $formData = [
+//                $_POST['email'],
+//                $_POST['pass'],
+//            ];
 
             if (!password_verify($_POST['oldPass'], $user->getPass()) || strlen($_POST['oldPass']) < 1)
             {
                 $_SESSION['errors']="wrongPass";
                 return $this->showProfile();
             } else {
-                echo "zalogowany";
-                die();
+                if (strlen($_POST['pass']) > 1)
+                {
+                    $user->setPass($_POST["pass"]);
+                    $user->saveToDB(DB::$conn);
+                    echo "Password has been changed";
+                    return $this->showProfile();
+                }
             }
-            $user->setEmail($_POST["email"]);
-            $user->saveToDB(DB::$conn);
-            return $this->showProfile();
+
+            if (isset($_POST['delAccount'])) {
+                $user->delete(DB::$conn);
+                echo "Account has been deleted";
+                return $this->showLogin();
+            }
+
         }
         return $this->showLogin();
     }
