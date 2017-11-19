@@ -23,6 +23,8 @@ class Tweet
         $tweet->setUserID($_SESSION["user"]);
         $tweet->setCreationDate(date("Y-m-d H:i:s"));
 
+        return $tweet;
+
     }
 
     public function saveToDB(\PDO $conn)

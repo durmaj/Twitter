@@ -3,6 +3,7 @@
 require_once __DIR__."/DB.php";
 require_once __DIR__."/../model/User.php";
 require_once __DIR__."/../model/Tweet.php";
+require_once __DIR__."/../model/Comment.php";
 session_start();
 
 class Controller
@@ -206,6 +207,30 @@ class Controller
             return $html;
 
 
+    }
+
+
+    public function submitComment()
+    {
+        echo $this->render('comment');
+
+        if (isset($_POST['comment'])) {
+            if (strlen($_POST['comment']) < 1) {
+                echo "Cannot send an empty comment";
+                return false;
+            }
+//            $comment = new Comment();
+            $comment->create();
+            $comment->setText($_POST['text']);
+            $comment->setUserID($_SESSION["user"]);
+            $comment->setTweetID($_GET['tweet']);
+            var_dump($comment);
+            $comment->saveToDB(DB::$conn);
+            echo "Comment added";
+//            echo "<meta http-equiv='refresh' content='0'>";
+//            return $this->showTweet();
+
+        }
     }
 
 
