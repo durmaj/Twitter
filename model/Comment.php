@@ -48,7 +48,7 @@ class Comment
         } return false;
     }
 
-    public function loadCommentsByTweetID(\PDO $conn, $id)
+    public static function loadCommentsByTweetID(\PDO $conn, $id)
     {
         $stmt = $conn->query("SELECT * FROM comments WHERE tweetID=$id ORDER BY creationDate DESC");
         $res = [];

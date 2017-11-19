@@ -23,6 +23,7 @@ if($uri === "/login") {
 
 if($uri === "/profile") {
     if($method === "GET") {
+        echo $controller->showNavbar();
         echo $controller->showProfile();die;
     } elseif($method === "POST") {
         echo $controller->updateProfile();die;
@@ -42,17 +43,20 @@ if($uri === "/logout") {
 }
 
 if($uri === "/") {
+    echo $controller->showNavbar();
     echo $controller->mainPage();
     echo $controller->createTweet();
 }
 
 if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
+    echo $controller->showNavbar();
     echo $controller->showTweet();
     echo $controller->submitComment();
 
 }
 
 if(strpos($_SERVER['REQUEST_URI'], 'user')){
+    echo $controller->showNavbar();
     echo $controller->showUser();
 }
 

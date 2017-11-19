@@ -15,6 +15,10 @@ class Controller
         }
         return $html;
     }
+    public function showNavbar()
+    {
+        return $this->render('navbar');
+    }
 
     public function showLogin()
     {
@@ -162,7 +166,7 @@ class Controller
         $tweets = Tweet::loadAllTweets(DB::$conn);
         foreach ($tweets as $tweet) {
             $html .= "<tr><td>";
-            $html .= User::loadById(DB::$conn,$tweet->getUserId())->getEmail();
+            $html .= "<a href=user?user=".User::loadById(DB::$conn,$tweet->getUserId())->getEmail().">".User::loadById(DB::$conn,$tweet->getUserId())->getEmail()."</a>";
             $html .= "</td>";
             $html .= "<td><a href=tweet?tweet=".$tweet->getId().">";
             $html .= $tweet->getText();
