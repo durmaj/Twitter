@@ -15,19 +15,14 @@ class Tweet
         $this->creationDate = null;
     }
 
-    static public function loadAllTweets(\PDO $conn)
+    public function create()
     {
-        $stmt = $conn->query('SELECT * FROM tweets ORDER BY creationDate DESC');
-        $res = [];
-        foreach ($stmt->fetchAll() as $row) {
-            $tweet = new Tweet();
-            $tweet->id = $row["id"];
-            $tweet->setUserID($row["userID"]);
-            $tweet->setText($row["text"]);
-            $tweet->setCreationDate($row["creationDate"]);
-            $res[] = $tweet;
-        }
-        return $res;
+        $tweet = new Tweet;
+
+        $tweet->setText($_POST['text']);
+        $tweet->setUserID($_SESSION["user"]);
+        $tweet->setCreationDate(date("Y-m-d H:i:s"));
+
     }
 
     public function saveToDB(\PDO $conn)
@@ -46,15 +41,38 @@ class Tweet
         } return false;
     }
 
-    public function create()
+    static public function loadAllTweets(\PDO $conn)
     {
-        $tweet = new Tweet;
-
-        $tweet->setText($_POST['text']);
-        $tweet->setUserID($_SESSION["user"]);
-        $tweet->setCreationDate(date("Y-m-d H:i:s"));
-
+        $stmt = $conn->query('SELECT * FROM tweets ORDER BY creationDate DESC');
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tweet = new Tweet();
+            $tweet->id = $row["id"];
+            $tweet->setUserID($row["userID"]);
+            $tweet->setText($row["text"]);
+            $tweet->setCreationDate($row["creationDate"]);
+            $res[] = $tweet;
+        }
+        return $res;
     }
+
+    static public function loadTweetById(\PDO $conn, $id)
+    {
+        $stmt = $conn->query("SELECT * FROM tweets WHERE id = $id");
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tweet = new Tweet();
+            $tweet->id = $row["id"];
+            $tweet->setUserID($row["userID"]);
+            $tweet->setText($row["text"]);
+            $tweet->setCreationDate($row["creationDate"]);
+            $res[] = $tweet;
+        }
+        return $res;
+    }
+
+
+
 
 
 //    static public function loadTweetsByUserID(\PDO $conn, $userID) {

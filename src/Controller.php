@@ -187,21 +187,21 @@ class Controller
             return $this->showAllTweets();
 
             }
+    }
+
+
+    public function showTweet()
+    {
+        DB::init();
+
+        if(isset($_GET["tweet"])) {
+            $tweet = Tweet::loadById(DB::$conn, $_SESSION["user"]);
+            return $this->render('tweetView',$tweet->toArray());
+        } else {
+            return $this->showAllTweets();
         }
 
-//        try {
-//            $tweet->saveToDB(DB::$conn);
-//        } catch (\Exception $e) {
-//            return $e->getMessage();
-//        }
-
-
-
-
-
-
-
-
+    }
 
 
 }
