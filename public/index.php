@@ -47,6 +47,17 @@ if($uri === "/logout") {
 if($uri === "/") {
     echo $controller->mainPage();
     echo $controller->createTweet();
+}
+
+if($uri ==="/tweet") {
+    if($method === "GET") {
+        echo $controller->showTweet();die;
+    } elseif($method === "POST") {
+        echo $controller->updateProfile();die;
+    }
+
+
+
 
 }
 

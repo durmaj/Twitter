@@ -59,6 +59,7 @@ class Tweet
     static public function loadTweetById(\PDO $conn, $id)
     {
         $stmt = $conn->query("SELECT * FROM tweets WHERE id = $id");
+        var_dump($stmt);
         $res = [];
         foreach ($stmt->fetchAll() as $row) {
             $tweet = new Tweet();
@@ -126,14 +127,14 @@ class Tweet
         $this->creationDate = $creationDate;
     }
 
-//    public function tweetsToArray()
-//    {
-//        return [
-//            'id' => $this->getId(),
-//            'userID' => $this->getUserID(),
-//            'text' => $this->getText(),
-//            'creationDate' => $this->getCreationDate()
-//        ];
-//    }
+    public function tweetsToArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'userID' => $this->getUserID(),
+            'text' => $this->getText(),
+            'creationDate' => $this->getCreationDate()
+        ];
+    }
 
 }

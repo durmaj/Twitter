@@ -157,7 +157,7 @@ class Controller
             $html .= "<tr><td>";
             $html .= User::loadById(DB::$conn,$tweet->getUserId())->getEmail();
             $html .= "</td>";
-            $html .= "<td><a href=comment.php?tweet=".$tweet->getId().">";
+            $html .= "<td><a href=tweet?tweet=".$tweet->getId().">";
             $html .= $tweet->getText();
             $html .= "</a></td><td>";
             $html .= $tweet->getCreationDate();
@@ -193,10 +193,9 @@ class Controller
     public function showTweet()
     {
         DB::init();
-
-        if(isset($_GET["tweet"])) {
-            $tweet = Tweet::loadById(DB::$conn, $_SESSION["user"]);
-            return $this->render('tweetView',$tweet->toArray());
+        if(isset($_SESSION["user"])) {
+            $tweet = Tweet::loadTweetById(DB::$conn, 25);
+            return $this->render('tweetView', $tweet->tweetsToArray());
         } else {
             return $this->showAllTweets();
         }
