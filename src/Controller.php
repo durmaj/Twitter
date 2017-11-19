@@ -140,9 +140,9 @@ class Controller
         return;
     }
 
-    public function showUser()
+    public function showMessageForm()
     {
-        echo $this->render('user');
+        echo $this->render('message');
     }
 
 
