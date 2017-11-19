@@ -49,7 +49,7 @@ if($uri === "/") {
     echo $controller->createTweet();
 }
 
-if($uri ==="/tweet") {
+  if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
     if($method === "GET") {
         echo $controller->showTweet();die;
     }

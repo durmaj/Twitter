@@ -193,12 +193,10 @@ class Controller
     public function showTweet()
     {
         DB::init();
-//        if(isset($_SESSION["user"])) {
-            $tweet = Tweet::loadTweetById(DB::$conn, 25);
+            $tweet = Tweet::loadTweetById(DB::$conn, $_GET['tweet']);
             $html = "<table><tbody><tr><th>User</th><th>Tweet</th><th>Date</th></tr><tr><td>";
             $html .= User::loadById(DB::$conn,$tweet->getUserId())->getEmail();
             $html .= "</td><td>";
-//            $html .= "<td>".$tweet->getId().">";
             $html .= $tweet->getText();
             $html .= "</td><td>";
             $html .= $tweet->getCreationDate();
@@ -206,9 +204,7 @@ class Controller
             $html .= "</tbody></table>";
 
             return $html;
-//        } else {
-//            echo "sth wrong";
-//        }
+
 
     }
 
