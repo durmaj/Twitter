@@ -183,7 +183,7 @@ class Controller
 
         DB::init();
         $tweets = Tweet::loadAllTweetsByUser(DB::$conn, $_GET['user']);
-        $html = "<table><tbody><tr><th>Tweet</th><th>Date</th></tr>";
+        $html = "<h1>User ".User::loadById(DB::$conn, $_GET['user'])->getEmail()."</h1><table><tbody><tr><th>Tweet</th><th>Date</th></tr>";
 //        $html .= '<h2>User:'.User::loadById(DB::$conn,$tweets->getUserId())->getEmail().'</h2>';
         foreach ($tweets as $tweet) {
             $html .= "<tr><td>";

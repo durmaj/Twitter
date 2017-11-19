@@ -57,7 +57,6 @@ if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
 
 if(strpos($_SERVER['REQUEST_URI'], 'user')){
     echo $controller->showNavbar();
-    echo $controller->showUser();
     echo $controller->showUserTweets();
 }
 
