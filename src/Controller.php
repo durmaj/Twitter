@@ -171,7 +171,7 @@ class Controller
 
     public function createTweet()
     {
-        DB::init();
+//        DB::init();
 
         $tweet = new Tweet();
         $tweet->create();
@@ -181,7 +181,8 @@ class Controller
 
         if (isset($_POST['tweet'])) {
             $tweet->saveToDB(DB::$conn);
-            echo "Tweet added";die;
+            echo "Tweet added";
+            echo "<meta http-equiv='refresh' content='0'>";
             return $this->showAllTweets();
         }
 
@@ -191,7 +192,6 @@ class Controller
 //            return $e->getMessage();
 //        }
 
-        header("location: /");
 
 
 
