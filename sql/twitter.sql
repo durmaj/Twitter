@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 18, 2017 at 11:25 PM
+-- Generation Time: Nov 19, 2017 at 01:23 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.23
 
@@ -25,6 +25,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `text` varchar(60) NOT NULL,
+  `tweetID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tweets`
 --
 
@@ -41,7 +54,26 @@ CREATE TABLE `tweets` (
 
 INSERT INTO `tweets` (`id`, `userID`, `text`, `creationDate`) VALUES
 (1, 29, 'Pierwszy tweet w bazie', '2017-11-18 00:00:00'),
-(2, 30, 'drugi tweet, ale z przeszlosci', '2017-11-05 00:00:00');
+(2, 30, 'drugi tweet, ale z przeszlosci', '2017-11-05 00:00:00'),
+(3, 33, 'trzeci tweet, juz jako user przez strone', '2017-11-19 00:37:46'),
+(4, 33, 'trzeci tweet, juz jako user przez strone', '2017-11-19 00:37:51'),
+(5, 33, 'kolejny tweet', '2017-11-19 00:38:10'),
+(6, 33, 'kolejny tweet', '2017-11-19 00:38:11'),
+(7, 33, 'just testin', '2017-11-19 00:38:47'),
+(8, 33, 'further testin', '2017-11-19 00:39:14'),
+(9, 33, 'ouch', '2017-11-19 00:39:21'),
+(13, 33, 'isit workin?', '2017-11-19 00:46:43'),
+(14, 33, 'isit workin?', '2017-11-19 00:46:45'),
+(15, 33, 'dindo nuffin', '2017-11-19 00:46:58'),
+(16, 33, 'any better?', '2017-11-19 11:21:59'),
+(17, 33, 'sth new', '2017-11-19 11:39:57'),
+(18, 33, 'still testin', '2017-11-19 11:40:22'),
+(19, 33, '', '2017-11-19 12:37:52'),
+(20, 33, 'notempty', '2017-11-19 12:39:42'),
+(21, 33, '', '2017-11-19 12:46:12'),
+(22, 33, '', '2017-11-19 12:46:14'),
+(23, 33, '', '2017-11-19 12:46:38'),
+(24, 33, '', '2017-11-19 12:47:46');
 
 -- --------------------------------------------------------
 
@@ -87,6 +119,14 @@ INSERT INTO `users` (`id`, `email`, `pass`) VALUES
 --
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `commentTweet` (`tweetID`),
+  ADD KEY `commentUser` (`userID`);
+
+--
 -- Indexes for table `tweets`
 --
 ALTER TABLE `tweets`
@@ -105,10 +145,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tweets`
 --
 ALTER TABLE `tweets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -119,6 +165,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `commentTweet` FOREIGN KEY (`tweetID`) REFERENCES `tweets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentUser` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tweets`
