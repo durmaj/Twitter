@@ -204,7 +204,8 @@ class Controller
             $html .= "</td></tr>";
             $html .= "</tbody></table>";
 
-//wyświetlanie komentarzy
+//wyświetlanie komentarzy do tweeta
+
         $comments = "<br><table><tbody><tr>Comments</tr>";
         $existingComments = Comment::loadCommentsByTweetID(DB::$conn, $_GET['tweet']);
             foreach ($existingComments as $key => $comment) {
@@ -237,6 +238,7 @@ class Controller
             $comment->setText($commentText);
             $comment->setUserID($_SESSION["user"]);
             $comment->setTweetID($_GET['tweet']);
+            $comment->setCreationDate(date("Y-m-d H:i:s"));
             $comment->saveToDB(DB::$conn);
             echo "Comment added";
             echo "<meta http-equiv='refresh' content='0'>";

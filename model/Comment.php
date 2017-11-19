@@ -5,6 +5,7 @@ class Comment
     private $text;
     private $tweetID;
     private $userID;
+    private $creationDate;
 
     public function __construct()
     {
@@ -12,6 +13,8 @@ class Comment
         $this->text = null;
         $this->tweetID = null;
         $this->userID = null;
+        $this->creationDate = null;
+
     }
 
     public function create()
@@ -21,6 +24,8 @@ class Comment
         $comment->setText($_POST['text']);
         $comment->setUserID($_SESSION["user"]);
         $comment->setTweetID($_GET['tweet']);
+        $comment->setCreationDate(date("Y-m-d H:i:s"));
+
 
         return $comment;
 
@@ -31,12 +36,13 @@ class Comment
         if(isset($_SESSION['user']))
         {
             $stmt = $conn->prepare(
-                'INSERT INTO comments (text, tweetID, userID) VALUES (:text, :tweetID, :userID)'
+                'INSERT INTO comments (text, tweetID, userID, creationDate) VALUES (:text, :tweetID, :userID, :creationDate)'
             );
             $comment = [
                 'text' => $this->getText(),
                 'tweetID' => $this->getTweetID(),
-                'userID' => $this->getUserID()
+                'userID' => $this->getUserID(),
+                'creationDate' => $this->getCreationDate()
             ];
             $stmt->execute($comment);
         } return false;
@@ -44,7 +50,7 @@ class Comment
 
     public function loadCommentsByTweetID(\PDO $conn, $id)
     {
-        $stmt = $conn->query("SELECT * FROM comments WHERE tweetID=$id");
+        $stmt = $conn->query("SELECT * FROM comments WHERE tweetID=$id ORDER BY creationDate DESC");
         $res = [];
         foreach ($stmt->fetchAll() as $row) {
             $comment = new Comment();
@@ -52,6 +58,7 @@ class Comment
             $comment->setText($row["text"]);
             $comment->setTweetID($row["tweetID"]);
             $comment->setUserID($row["userID"]);
+            $comment->setCreationDate($row["creationDate"]);
             $res[] = $comment;
         }
         return $res;
@@ -68,6 +75,8 @@ class Comment
             $comment->setText($row["text"]);
             $comment->setTweetID($row["tweetID"]);
             $comment->setUserID($row["userID"]);
+            $comment->setCreationDate($row["creationDate"]);
+
             return $comment;
         } else {
             return null;
@@ -109,6 +118,16 @@ class Comment
     public function setUserID($userID)
     {
         $this->userID = $userID;
+    }
+
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate($creationDate)
+    {
+        $this->creationDate = $creationDate;
     }
 
 
