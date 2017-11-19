@@ -210,9 +210,11 @@ class Controller
         $existingComments = Comment::loadCommentsByTweetID(DB::$conn, $_GET['tweet']);
             foreach ($existingComments as $key => $comment) {
                 $comments .= "<tr><td>";
-                $comments .= $comment->getId();
+                $comments .= User::loadById(DB::$conn,$tweet->getUserId())->getEmail();
                 $comments .= "</td><td>";
                 $comments .= $comment->getText();
+                $comments .= "</td><td>";
+                $comments .= $comment->getCreationDate();
                 $comments .= "</td></tr>";
             }
         $comments .= "</tbody></table>";
