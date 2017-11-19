@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2017 at 01:23 PM
+-- Generation Time: Nov 19, 2017 at 09:55 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.23
 
@@ -32,8 +32,19 @@ CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `text` varchar(60) NOT NULL,
   `tweetID` int(11) NOT NULL,
-  `userID` int(11) NOT NULL
+  `userID` int(11) NOT NULL,
+  `creationDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `text`, `tweetID`, `userID`, `creationDate`) VALUES
+(19, 'test komentarza', 3, 33, '2017-11-19 21:34:03'),
+(20, 'drugi komentarz do tego tweeta', 3, 33, '2017-11-19 21:34:16'),
+(21, 'trzeci tweet', 3, 33, '2017-11-19 21:37:34'),
+(22, 'try', 25, 33, '2017-11-19 21:39:30');
 
 -- --------------------------------------------------------
 
@@ -73,7 +84,8 @@ INSERT INTO `tweets` (`id`, `userID`, `text`, `creationDate`) VALUES
 (21, 33, '', '2017-11-19 12:46:12'),
 (22, 33, '', '2017-11-19 12:46:14'),
 (23, 33, '', '2017-11-19 12:46:38'),
-(24, 33, '', '2017-11-19 12:47:46');
+(24, 33, '', '2017-11-19 12:47:46'),
+(25, 33, 'still going?', '2017-11-19 13:32:47');
 
 -- --------------------------------------------------------
 
@@ -148,13 +160,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tweets`
 --
 ALTER TABLE `tweets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `users`
