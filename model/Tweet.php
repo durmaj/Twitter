@@ -90,22 +90,14 @@ class Tweet
         return $res;
     }
 
+    static public function getNumberOfComments(\PDO $conn, $id)
+    {
+        $stmt = $conn->query("SELECT * FROM comments WHERE tweetID=$id");
+        $comments = $stmt->rowCount();
 
+        return $comments;
 
-
-//    static public function loadTweetsByUser(\PDO $conn, $userID) {
-//        $stmt = $conn->prepare("SELECT * FROM tweets WHERE id=:userID");
-//        $res = $stmt->execute(['userID'=>$userID]);
-//        if($res && $stmt->rowCount() > 0) {
-//            $row = $stmt->fetch();
-//            $tweet = new Tweet();
-//            $tweet->id = $row["id"];
-//            $tweet->setEmail($row["email"])
-//                ->setDirectPass($row["pass"]);
-//            return $tweet;
-//        }
-//        return null;
-//    }
+    }
 
 // getters & setters
 
