@@ -136,6 +136,12 @@ class Controller
         return;
     }
 
+    public function showUser()
+    {
+        echo $this->render('user');
+    }
+
+
     public function mainPage()
     {
         if(isset($_SESSION["user"])) {
@@ -219,12 +225,8 @@ class Controller
             }
         $comments .= "</tbody></table>";
 
-
             return $html . $comments;
-
-
     }
-
 
     public function submitComment()
     {
@@ -246,6 +248,5 @@ class Controller
             echo "<meta http-equiv='refresh' content='0'>";
         }
     }
-
 
 }

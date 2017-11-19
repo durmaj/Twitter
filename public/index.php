@@ -29,16 +29,13 @@ if($uri === "/profile") {
     }
 }
 
-
 if($uri === "/register") {
     if($method === "GET") {
         echo $controller->showRegister();die;
     } elseif($method === "POST") {
         return $controller->createUser();
-
     }
 }
-
 
 if($uri === "/logout") {
     echo $controller->logout();die;
@@ -49,10 +46,15 @@ if($uri === "/") {
     echo $controller->createTweet();
 }
 
-  if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
-        echo $controller->showTweet();
-        echo $controller->submitComment();
+if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
+    echo $controller->showTweet();
+    echo $controller->submitComment();
 
 }
+
+if(strpos($_SERVER['REQUEST_URI'], 'user')){
+    echo $controller->showUser();
+}
+
 
 
