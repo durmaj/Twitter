@@ -204,7 +204,20 @@ class Controller
             $html .= "</td></tr>";
             $html .= "</tbody></table>";
 
-            return $html;
+//wyświetlanie komentarzy
+        $comments = "<br><table><tbody><tr>Comments</tr>";
+        $existingComments = Comment::loadCommentsByTweetID(DB::$conn, $_GET['tweet']);
+            foreach ($existingComments as $key => $comment) {
+                $comments .= "<tr><td>";
+                $comments .= $comment->getId();
+                $comments .= "</td><td>";
+                $comments .= $comment->getText();
+                $comments .= "</td></tr>";
+            }
+        $comments .= "</tbody></table>";
+
+
+            return $html . $comments;
 
 
     }
@@ -214,10 +227,10 @@ class Controller
     {
         echo $this->render('comment');
         if (isset($_POST['send'])) {
-//            if (strlen($_POST['comment']) < 1) {
-//                echo "Cannot send an empty comment";
-//                return false;
-//            }
+            if (strlen($_POST['commentText']) < 1) {
+                echo "Cannot send an empty comment";
+                return false;
+            }
             $commentText = $_POST['commentText'];
             $comment = new Comment();
             $comment->create();
@@ -229,7 +242,7 @@ class Controller
 //            echo "<meta http-equiv='refresh' content='0'>";
 //            return $this->showTweet();
 
-        } echo "dup[a";
+        }
     }
 
 

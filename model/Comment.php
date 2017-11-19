@@ -42,6 +42,38 @@ class Comment
         } return false;
     }
 
+    public function loadCommentsByTweetID(\PDO $conn, $id)
+    {
+        $stmt = $conn->query("SELECT * FROM comments WHERE tweetID=$id");
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $comment = new Comment();
+            $comment->id = $row["id"];
+            $comment->setText($row["text"]);
+            $comment->setTweetID($row["tweetID"]);
+            $comment->setUserID($row["userID"]);
+            $res[] = $comment;
+        }
+        return $res;
+    }
+
+    public function loadCommentByID(\PDO $conn, $id)
+    {
+        $stmt = $conn->prepare('SELECT * FROM comments WHERE id=:id');
+        $res = $stmt->execute(['id' => $id]);
+        if ($res && $stmt->rowCount() > 0) {
+            $row = $stmt->fetch();
+            $comment = new Comment();
+            $comment->id = $row["id"];
+            $comment->setText($row["text"]);
+            $comment->setTweetID($row["tweetID"]);
+            $comment->setUserID($row["userID"]);
+            return $comment;
+        } else {
+            return null;
+        }
+    }
+
 //getters and setters
 
     public function getId()
