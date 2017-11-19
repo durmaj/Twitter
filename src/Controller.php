@@ -171,19 +171,22 @@ class Controller
 
     public function createTweet()
     {
-//        DB::init();
-
-        $tweet = new Tweet();
-        $tweet->create();
-        $tweet->setText($_POST['text']);
-        $tweet->setUserID($_SESSION["user"]);
-        $tweet->setCreationDate(date("Y-m-d H:i:s"));
-
         if (isset($_POST['tweet'])) {
+            if (strlen($_POST['text']) < 1) {
+                echo "Cannot send an empty tweet";
+                return false;
+            }
+            $tweet = new Tweet();
+            $tweet->create();
+            $tweet->setText($_POST['text']);
+            $tweet->setUserID($_SESSION["user"]);
+            $tweet->setCreationDate(date("Y-m-d H:i:s"));
             $tweet->saveToDB(DB::$conn);
             echo "Tweet added";
             echo "<meta http-equiv='refresh' content='0'>";
             return $this->showAllTweets();
+
+            }
         }
 
 //        try {
@@ -196,7 +199,7 @@ class Controller
 
 
 
-    }
+
 
 
 
