@@ -52,12 +52,7 @@ if($uri === "/") {
 if($uri ==="/tweet") {
     if($method === "GET") {
         echo $controller->showTweet();die;
-    } elseif($method === "POST") {
-        echo $controller->updateProfile();die;
     }
-
-
-
 
 }
 

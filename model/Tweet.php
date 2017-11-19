@@ -58,18 +58,19 @@ class Tweet
 
     static public function loadTweetById(\PDO $conn, $id)
     {
-        $stmt = $conn->query("SELECT * FROM tweets WHERE id = $id");
-        var_dump($stmt);
-        $res = [];
-        foreach ($stmt->fetchAll() as $row) {
+        $stmt = $conn->prepare('SELECT * FROM Tweets WHERE id=:id');
+        $res = $stmt->execute(['id' => $id]);
+        if ($res && $stmt->rowCount() > 0) {
+            $row = $stmt->fetch();
             $tweet = new Tweet();
             $tweet->id = $row["id"];
-            $tweet->setUserID($row["userID"]);
             $tweet->setText($row["text"]);
+            $tweet->setUserId($row["userID"]);
             $tweet->setCreationDate($row["creationDate"]);
-            $res[] = $tweet;
+            return $tweet;
+        } else {
+            return null;
         }
-        return $res;
     }
 
 
