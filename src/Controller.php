@@ -213,24 +213,23 @@ class Controller
     public function submitComment()
     {
         echo $this->render('comment');
-
-        if (isset($_POST['comment'])) {
-            if (strlen($_POST['comment']) < 1) {
-                echo "Cannot send an empty comment";
-                return false;
-            }
-//            $comment = new Comment();
+        if (isset($_POST['send'])) {
+//            if (strlen($_POST['comment']) < 1) {
+//                echo "Cannot send an empty comment";
+//                return false;
+//            }
+            $commentText = $_POST['commentText'];
+            $comment = new Comment();
             $comment->create();
-            $comment->setText($_POST['text']);
+            $comment->setText($commentText);
             $comment->setUserID($_SESSION["user"]);
             $comment->setTweetID($_GET['tweet']);
-            var_dump($comment);
             $comment->saveToDB(DB::$conn);
             echo "Comment added";
 //            echo "<meta http-equiv='refresh' content='0'>";
 //            return $this->showTweet();
 
-        }
+        } echo "dup[a";
     }
 
 

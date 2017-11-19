@@ -50,10 +50,8 @@ if($uri === "/") {
 }
 
   if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
-    if($method === "GET") {
         echo $controller->showTweet();
         echo $controller->submitComment();
-    }
 
 }
 
