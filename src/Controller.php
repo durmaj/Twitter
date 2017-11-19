@@ -239,9 +239,7 @@ class Controller
             $comment->setTweetID($_GET['tweet']);
             $comment->saveToDB(DB::$conn);
             echo "Comment added";
-//            echo "<meta http-equiv='refresh' content='0'>";
-//            return $this->showTweet();
-
+            echo "<meta http-equiv='refresh' content='0'>";
         }
     }
 
