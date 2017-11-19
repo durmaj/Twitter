@@ -166,7 +166,7 @@ class Controller
         $tweets = Tweet::loadAllTweets(DB::$conn);
         foreach ($tweets as $tweet) {
             $html .= "<tr><td>";
-            $html .= "<a href=user?user=".User::loadById(DB::$conn,$tweet->getUserId())->getEmail().">".User::loadById(DB::$conn,$tweet->getUserId())->getEmail()."</a>";
+            $html .= "<a href=user?user=".$tweet->getUserId().">".User::loadById(DB::$conn,$tweet->getUserId())->getEmail()."</a>";
             $html .= "</td>";
             $html .= "<td><a href=tweet?tweet=".$tweet->getId().">";
             $html .= $tweet->getText();
@@ -176,8 +176,25 @@ class Controller
         }
         $html .= "</tbody></table>";
         return $html;
+    }
 
+    public function showUserTweets()
+    {
 
+        DB::init();
+        $tweets = Tweet::loadAllTweetsByUser(DB::$conn, $_GET['user']);
+        $html = "<table><tbody><tr><th>Tweet</th><th>Date</th></tr>";
+//        $html .= '<h2>User:'.User::loadById(DB::$conn,$tweets->getUserId())->getEmail().'</h2>';
+        foreach ($tweets as $tweet) {
+            $html .= "<tr><td>";
+            $html .= "<td><a href=tweet?tweet=".$tweet->getId().">";
+            $html .= $tweet->getText();
+            $html .= "</a></td><td>";
+            $html .= $tweet->getCreationDate();
+            $html .= "</td></tr>";
+        }
+        $html .= "</tbody></table>";
+        return $html;
     }
 
     public function createTweet()

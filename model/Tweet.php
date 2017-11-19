@@ -75,12 +75,26 @@ class Tweet
         }
     }
 
+    static public function loadAllTweetsByUser(\PDO $conn, $id)
+    {
+        $stmt = $conn->query("SELECT * FROM tweets WHERE userID=$id ORDER BY creationDate DESC");
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tweet = new Tweet();
+            $tweet->id = $row["id"];
+            $tweet->setUserID($row["userID"]);
+            $tweet->setText($row["text"]);
+            $tweet->setCreationDate($row["creationDate"]);
+            $res[] = $tweet;
+        }
+        return $res;
+    }
 
 
 
 
-//    static public function loadTweetsByUserID(\PDO $conn, $userID) {
-//        $stmt = $conn->prepare('SELECT * FROM tweets WHERE id=:userID');
+//    static public function loadTweetsByUser(\PDO $conn, $userID) {
+//        $stmt = $conn->prepare("SELECT * FROM tweets WHERE id=:userID");
 //        $res = $stmt->execute(['userID'=>$userID]);
 //        if($res && $stmt->rowCount() > 0) {
 //            $row = $stmt->fetch();
