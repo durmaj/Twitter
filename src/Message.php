@@ -51,6 +51,22 @@ class Message
     }
 
 
+    static public function loadAllMessagesForUser(\PDO $conn, $receiverID)
+    {
+        $stmt = $conn->query("SELECT * FROM messages WHERE receiverID=$receiverID ORDER BY creationDate DESC");
+        $res = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $message = new Message();
+            $message->id = $row["id"];
+            $message->setReceiverID($row["receiverID"]);
+            $message->setSenderID($row["senderID"]);
+            $message->setText($row["text"]);
+            $message->setCreationDate($row["creationDate"]);
+            $message->setIsread($row["isread"]);
+            $res[] = $message;
+        }
+        return $res;
+    }
 
     public function getSenderID()
     {

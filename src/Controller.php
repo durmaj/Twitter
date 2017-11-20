@@ -174,7 +174,7 @@ class Controller
     {
 
         DB::init();
-        $html = "<table><tbody><tr><th>User</th><th>Tweet</th><th>Date</th></tr>";
+        $html = "<table><tbody><tr><th>User</th><th>Tweet</th><th>Date</th><th>Comments</th></tr>";
         $tweets = Tweet::loadAllTweets(DB::$conn);
         foreach ($tweets as $tweet) {
             $html .= "<tr><td>";
@@ -184,7 +184,7 @@ class Controller
             $html .= $tweet->getText();
             $html .= "</a></td><td>";
             $html .= $tweet->getCreationDate();
-            $html .= "</td></tr>";
+            $html .= "</td><td>".$tweet->getNumberOfComments(DB::$conn, $tweet->getId())."</td></tr>";
         }
         $html .= "</tbody></table>";
         return $html;
