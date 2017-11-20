@@ -61,5 +61,10 @@ if(strpos($_SERVER['REQUEST_URI'], 'user')){
     echo $controller->showMessageForm();
 }
 
+if(strpos($_SERVER['REQUEST_URI'], 'messages')){
+    echo $controller->showNavbar();
+    echo $controller->showReceivedMessages();
+}
+
 
 

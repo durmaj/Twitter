@@ -145,6 +145,18 @@ class Controller
         echo $this->render('message');
     }
 
+    public function showReceivedMessages()
+    {
+        DB::init();
+        $html = "<h2>Received messages</h2><table><tbody><tr><th>User</th><th>Message</th><th>Date</th></tr>";
+
+
+        $html .= "</tbody></table>";
+
+        return $html;
+
+    }
+
 
     public function mainPage()
     {
