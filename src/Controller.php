@@ -157,9 +157,10 @@ class Controller
             $html .= "<tr><td>";
             $html .= "<a href=user?user=".$senderID.">".User::loadById(DB::$conn,$senderID)->getEmail()."</a>";
             $html .= "</td>";
-            $html .= "<td><a href=message?message=".$message->getId().">";
-            $html .= $message->getText();
-            $html .= "</a></td><td>";
+            $html .= "<td><b><a href=message?message=".$message->getId().">";
+            $messagePart = substr($message->getText(), 0, 30);
+            $html .= $messagePart;
+            $html .= "</a></b></td><td>";
             $html .= $message->getCreationDate();
             $html .= "</td></tr>";
         }
