@@ -151,13 +151,13 @@ class Controller
         DB::init();
         $html = "<h2>Received messages</h2><table><tbody><tr><th>User</th><th>Message</th><th>Date</th></tr>";
 
-        var_dump($_SESSION['user']);
         $messages = Message::loadAllMessagesForUser(DB::$conn, $_SESSION['user']);
         foreach ($messages as $message) {
+            $senderID = $message->getSenderID();
             $html .= "<tr><td>";
-            $html .= "<a href=user?user=".$message->getSenderID().">".User::loadById(DB::$conn,$_SESSION['user'])->getEmail()."</a>";
+            $html .= "<a href=user?user=".$senderID.">".User::loadById(DB::$conn,$senderID)->getEmail()."</a>";
             $html .= "</td>";
-            $html .= "<td><a href=tweet?tweet=".$message->getId().">";
+            $html .= "<td><a href=message?message=".$message->getId().">";
             $html .= $message->getText();
             $html .= "</a></td><td>";
             $html .= $message->getCreationDate();

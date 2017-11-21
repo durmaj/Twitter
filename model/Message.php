@@ -24,7 +24,7 @@ class Message
 
         $message->setText($_POST['text']);
         $message->setSenderID($_SESSION["user"]);
-        $message->setReceiverID($_SESSION["user"]);
+        $message->setReceiverID($_GET['user']);
         $message->setCreationDate(date("Y-m-d H:i:s"));
         $message->setIsread("0");
 
