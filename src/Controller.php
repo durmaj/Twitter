@@ -4,6 +4,7 @@ require_once __DIR__."/DB.php";
 require_once __DIR__."/../model/User.php";
 require_once __DIR__."/../model/Tweet.php";
 require_once __DIR__."/../model/Comment.php";
+require_once __DIR__."/../model/Message.php";
 session_start();
 
 class Controller
@@ -149,6 +150,19 @@ class Controller
     {
         DB::init();
         $html = "<h2>Received messages</h2><table><tbody><tr><th>User</th><th>Message</th><th>Date</th></tr>";
+
+        var_dump($_SESSION['user']);
+        $messages = Message::loadAllMessagesForUser(DB::$conn, $_SESSION['user']);
+        foreach ($messages as $message) {
+            $html .= "<tr><td>";
+            $html .= "<a href=user?user=".$message->getSenderID().">".User::loadById(DB::$conn,$_SESSION['user'])->getEmail()."</a>";
+            $html .= "</td>";
+            $html .= "<td><a href=tweet?tweet=".$message->getId().">";
+            $html .= $message->getText();
+            $html .= "</a></td><td>";
+            $html .= $message->getCreationDate();
+            $html .= "</td></tr>";
+        }
 
 
         $html .= "</tbody></table>";
