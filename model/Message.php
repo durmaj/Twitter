@@ -16,6 +16,7 @@ class Message
         $this->receiverID = null;
         $this->text = null;
         $this->creationDate = null;
+        $this->isread = 0;
     }
 
     public function create()

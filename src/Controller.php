@@ -144,7 +144,25 @@ class Controller
     public function showMessageForm()
     {
         echo $this->render('message');
+        if (isset($_POST['sendMsg'])) {
+            if (strlen($_POST['messageText']) < 1) {
+                echo "Cannot send an empty comment";
+                return false;
+            }
+            $messageText = $_POST['messageText'];
+            $message = new Message();
+            $message->create();
+            $message->setText($messageText);
+            $message->setSenderID($_SESSION["user"]);
+            $message->setReceiverID($_GET["user"]);
+            $message->setCreationDate(date("Y-m-d H:i:s"));
+            $message->setIsread(0);
+            $message->saveToDB(DB::$conn);
+            echo "Message sent";
+//            echo "<meta http-equiv='refresh' content='0'>";
+        }
     }
+
 
     public function showReceivedMessages()
     {

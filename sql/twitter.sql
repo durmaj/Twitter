@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2017 at 10:32 PM
+-- Generation Time: Nov 21, 2017 at 10:50 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.0.23
 
@@ -46,7 +46,8 @@ INSERT INTO `comments` (`id`, `text`, `tweetID`, `userID`, `creationDate`) VALUE
 (21, 'trzeci tweet', 3, 33, '2017-11-19 21:37:34'),
 (22, 'try', 25, 33, '2017-11-19 21:39:30'),
 (23, 'a jeszcze kolejny', 25, 33, '2017-11-19 22:21:17'),
-(24, 'asdfasd', 25, 33, '2017-11-19 22:21:22');
+(24, 'asdfasd', 25, 33, '2017-11-19 22:21:22'),
+(25, 'ojpoj', 13, 33, '2017-11-20 22:52:06');
 
 -- --------------------------------------------------------
 
@@ -59,17 +60,16 @@ CREATE TABLE `messages` (
   `senderID` int(11) NOT NULL,
   `receiverID` int(11) NOT NULL,
   `text` varchar(500) NOT NULL,
-  `isread` tinyint(1) NOT NULL
+  `isread` tinyint(1) NOT NULL,
+  `creationDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `messages`
 --
 
-INSERT INTO `messages` (`id`, `senderID`, `receiverID`, `text`, `isread`) VALUES
-(1, 8, 33, 'pierwsza wiadomosc prywatna', 0),
-(2, 8, 3, 'kolejna wiadomosc', 0),
-(3, 33, 8, 'blabla', 1);
+INSERT INTO `messages` (`id`, `senderID`, `receiverID`, `text`, `isread`, `creationDate`) VALUES
+(4, 8, 33, 'testowa wiadomosc o dlugosci takiej, zeby wyswietlilo tylko pierwsze 30 znakow, a cala reszte dopiero po kliknieciu', 0, '2017-11-20 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -177,13 +177,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tweets`
