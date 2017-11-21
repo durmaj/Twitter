@@ -157,8 +157,12 @@ class Controller
             $message->setReceiverID($_GET["user"]);
             $message->setCreationDate(date("Y-m-d H:i:s"));
             $message->setIsread(0);
-            $message->saveToDB(DB::$conn);
-            echo "Message sent";
+            try {
+                $message->saveToDB(DB::$conn);
+                echo "Message sent";
+            } catch (\Exception $e) {
+                echo "Unable to send message. Encountered problem:".$e->getMessage();
+            }
 //            echo "<meta http-equiv='refresh' content='0'>";
         }
     }

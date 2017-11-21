@@ -38,7 +38,7 @@ class Message
         if(isset($_SESSION['user']))
         {
             $stmt = $conn->prepare(
-                'INSERT INTO messages (senderID, receiverID, text, creationDate, isread) VALUES (:senderID, :receiverID :text, :creationDate, :isread)'
+                'INSERT INTO messages (senderID, receiverID, text, creationDate, isread) VALUES (:senderID, :receiverID, :text, :creationDate, :isread)'
             );
             $message = [
                 'senderID' => $this->getSenderID(),
