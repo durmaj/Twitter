@@ -178,10 +178,19 @@ class Controller
             $html .= "<tr><td>";
             $html .= "<a href=user?user=".$senderID.">".User::loadById(DB::$conn,$senderID)->getEmail()."</a>";
             $html .= "</td>";
-            $html .= "<td><b><a href=msg?message=".$message->getId().">";
             $messagePart = substr($message->getText(), 0, 30);
-            $html .= $messagePart;
-            $html .= "</a></b></td><td>";
+
+            if ($message->getIsread() == 1) {
+                $html .= "<td><a href=msg?message=" . $message->getId() . ">";
+                $html .= $messagePart;
+                $html .= "</a></td><td>";
+            } else {
+
+                $html .= "<td><b><a href=msg?message=" . $message->getId() . ">";
+                $html .= $messagePart;
+                $html .= "</b>";
+            }
+
             $html .= $message->getCreationDate();
             $html .= "</td></tr>";
         }
@@ -208,7 +217,7 @@ class Controller
         return $html;
 
 
-        //TODO: validation (cannot see other users messages
+        //TODO: validation
 
     }
 

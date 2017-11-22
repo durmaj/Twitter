@@ -72,7 +72,9 @@ class Message
     static public function loadMessageByID(\PDO $conn, $id)
     {
         $stmt = $conn->prepare('SELECT * FROM messages WHERE id=:id');
+        $stmt2 = $conn->prepare('UPDATE `messages` SET `isread`=1 WHERE  id=:id');
         $res = $stmt->execute(['id' => $id]);
+        $res = $stmt2->execute(['id' => $id]);
         if ($res && $stmt->rowCount() > 0) {
             $row = $stmt->fetch();
             $message = new Message();
@@ -82,6 +84,7 @@ class Message
             $message->setReceiverID($row["receiverID"]);
             $message->setIsread($row["isread"]);
             $message->setCreationDate($row["creationDate"]);
+
             return $message;
         } else {
             return null;
