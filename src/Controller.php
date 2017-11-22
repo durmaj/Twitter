@@ -143,7 +143,7 @@ class Controller
 
     public function showMessageForm()
     {
-        echo $this->render('message');
+        echo $this->render('messageForm');
         if (isset($_POST['sendMsg'])) {
             if (strlen($_POST['messageText']) < 1) {
                 echo "Cannot send an empty comment";
@@ -163,7 +163,6 @@ class Controller
             } catch (\Exception $e) {
                 echo "Unable to send message. Encountered problem:".$e->getMessage();
             }
-//            echo "<meta http-equiv='refresh' content='0'>";
         }
     }
 
@@ -179,7 +178,7 @@ class Controller
             $html .= "<tr><td>";
             $html .= "<a href=user?user=".$senderID.">".User::loadById(DB::$conn,$senderID)->getEmail()."</a>";
             $html .= "</td>";
-            $html .= "<td><b><a href=message?message=".$message->getId().">";
+            $html .= "<td><b><a href=msg?message=".$message->getId().">";
             $messagePart = substr($message->getText(), 0, 30);
             $html .= $messagePart;
             $html .= "</a></b></td><td>";
@@ -194,6 +193,28 @@ class Controller
 
     }
 
+    public function showMessage()
+    {
+        DB::init();
+        $message = Message::loadMessageByID(DB::$conn, $_GET['message']);
+        $senderID = $message->getSenderID();
+
+        $html = "<h2>Message from:</h2><table><tbody><tr><th>";
+        $html .= User::loadById(DB::$conn,$senderID)->getEmail();
+        $html .= "user</th><th>Date</th></tr>";
+        $html .= "<td>";
+        $html .= $message->getText();
+        $html .= "</td><td>";
+        $html .= $message->getCreationDate();
+        $html .= "</td></tr>";
+        $html .= "</tbody></table>";
+
+        return $html;
+
+
+        //TODO: validation (cannot see other users messages
+
+    }
 
     public function mainPage()
     {

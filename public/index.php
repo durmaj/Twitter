@@ -58,13 +58,22 @@ if(strpos($_SERVER['REQUEST_URI'], 'tweet')){
 if(strpos($_SERVER['REQUEST_URI'], 'user')){
     echo $controller->showNavbar();
     echo $controller->showUserTweets();
+    if ($_SESSION['user'] != $_GET['user']) {
     echo $controller->showMessageForm();
+    }
 }
 
 if(strpos($_SERVER['REQUEST_URI'], 'messages')){
     echo $controller->showNavbar();
     echo $controller->showReceivedMessages();
 }
+
+if(strpos($_SERVER['REQUEST_URI'], 'msg')){
+    echo $controller->showNavbar();
+    echo $controller->showMessage();
+    echo "single message view";
+}
+
 
 
 

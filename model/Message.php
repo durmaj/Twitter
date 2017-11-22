@@ -69,6 +69,27 @@ class Message
         return $res;
     }
 
+    static public function loadMessageByID(\PDO $conn, $id)
+    {
+        $stmt = $conn->prepare('SELECT * FROM messages WHERE id=:id');
+        $res = $stmt->execute(['id' => $id]);
+        if ($res && $stmt->rowCount() > 0) {
+            $row = $stmt->fetch();
+            $message = new Message();
+            $message->id = $row["id"];
+            $message->setText($row["text"]);
+            $message->setSenderID($row["senderID"]);
+            $message->setReceiverID($row["receiverID"]);
+            $message->setIsread($row["isread"]);
+            $message->setCreationDate($row["creationDate"]);
+            return $message;
+        } else {
+            return null;
+        }
+
+
+    }
+
     public function getSenderID()
     {
         return $this->senderID;
