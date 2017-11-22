@@ -199,15 +199,11 @@ class Controller
         $message = Message::loadMessageByID(DB::$conn, $_GET['message']);
         $senderID = $message->getSenderID();
 
-        $html = "<h2>Message from:</h2><table><tbody><tr><th>";
-        $html .= User::loadById(DB::$conn,$senderID)->getEmail();
-        $html .= "user</th><th>Date</th></tr>";
-        $html .= "<td>";
+        $html = "<h2>Message from: ".User::loadById(DB::$conn,$senderID)->getEmail()."</h2>";
+        $html .= "<h3>Date: ".$message->getCreationDate()."</h3>";
+        $html .= "<span>";
         $html .= $message->getText();
-        $html .= "</td><td>";
-        $html .= $message->getCreationDate();
-        $html .= "</td></tr>";
-        $html .= "</tbody></table>";
+        $html .= "</span>";
 
         return $html;
 

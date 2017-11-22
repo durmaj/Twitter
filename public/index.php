@@ -71,7 +71,6 @@ if(strpos($_SERVER['REQUEST_URI'], 'messages')){
 if(strpos($_SERVER['REQUEST_URI'], 'msg')){
     echo $controller->showNavbar();
     echo $controller->showMessage();
-    echo "single message view";
 }
 
 
