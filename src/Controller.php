@@ -64,7 +64,7 @@ class Controller
             header('Location: /');
             return;
         } else {
-            return "no";
+            throw new \Exception("Wrong password");
         }
     }
 

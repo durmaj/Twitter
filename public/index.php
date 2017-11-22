@@ -16,8 +16,7 @@ if($uri === "/login") {
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
-        die;
+        return;
     }
 }
 
@@ -73,6 +72,8 @@ if(strpos($_SERVER['REQUEST_URI'], 'msg')){
     echo $controller->showMessage();
 }
 
+if(uri !== '/login' && $_SESSION['user'] == null) {
+    header('Location: /login');
 
-
+}
 
