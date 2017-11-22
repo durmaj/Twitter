@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
+-- version 4.4.15.7
+-- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 21, 2017 at 10:50 PM
+-- Host: 127.0.0.1
+-- Generation Time: Nov 22, 2017 at 03:39 PM
 -- Server version: 5.7.19
--- PHP Version: 7.0.23
+-- PHP Version: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -28,26 +26,21 @@ SET time_zone = "+00:00";
 -- Table structure for table `comments`
 --
 
-CREATE TABLE `comments` (
+CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL,
   `text` varchar(60) NOT NULL,
   `tweetID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `creationDate` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `comments`
 --
 
 INSERT INTO `comments` (`id`, `text`, `tweetID`, `userID`, `creationDate`) VALUES
-(19, 'test komentarza', 3, 33, '2017-11-19 21:34:03'),
-(20, 'drugi komentarz do tego tweeta', 3, 33, '2017-11-19 21:34:16'),
-(21, 'trzeci tweet', 3, 33, '2017-11-19 21:37:34'),
-(22, 'try', 25, 33, '2017-11-19 21:39:30'),
-(23, 'a jeszcze kolejny', 25, 33, '2017-11-19 22:21:17'),
-(24, 'asdfasd', 25, 33, '2017-11-19 22:21:22'),
-(25, 'ojpoj', 13, 33, '2017-11-20 22:52:06');
+(26, 'komentarz do tweeta', 27, 33, '2017-11-22 16:38:31'),
+(27, 'kolejny komentarz', 27, 33, '2017-11-22 16:38:39');
 
 -- --------------------------------------------------------
 
@@ -55,21 +48,22 @@ INSERT INTO `comments` (`id`, `text`, `tweetID`, `userID`, `creationDate`) VALUE
 -- Table structure for table `messages`
 --
 
-CREATE TABLE `messages` (
+CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL,
   `senderID` int(11) NOT NULL,
   `receiverID` int(11) NOT NULL,
   `text` varchar(500) NOT NULL,
   `isread` tinyint(1) NOT NULL,
   `creationDate` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `messages`
 --
 
 INSERT INTO `messages` (`id`, `senderID`, `receiverID`, `text`, `isread`, `creationDate`) VALUES
-(4, 8, 33, 'testowa wiadomosc o dlugosci takiej, zeby wyswietlilo tylko pierwsze 30 znakow, a cala reszte dopiero po kliknieciu', 0, '2017-11-20 00:00:00');
+(4, 8, 33, 'testowa wiadomosc o dlugosci takiej, zeby wyswietlilo tylko pierwsze 30 znakow, a cala reszte dopiero po kliknieciu', 1, '2017-11-20 00:00:00'),
+(6, 8, 33, 'kolejna wiadomość', 0, '2017-11-29 10:30:10');
 
 -- --------------------------------------------------------
 
@@ -77,38 +71,18 @@ INSERT INTO `messages` (`id`, `senderID`, `receiverID`, `text`, `isread`, `creat
 -- Table structure for table `tweets`
 --
 
-CREATE TABLE `tweets` (
+CREATE TABLE IF NOT EXISTS `tweets` (
   `id` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `text` varchar(140) NOT NULL,
   `creationDate` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tweets`
 --
 
 INSERT INTO `tweets` (`id`, `userID`, `text`, `creationDate`) VALUES
-(3, 33, 'trzeci tweet, juz jako user przez strone', '2017-11-19 00:37:46'),
-(4, 33, 'trzeci tweet, juz jako user przez strone', '2017-11-19 00:37:51'),
-(5, 33, 'kolejny tweet', '2017-11-19 00:38:10'),
-(6, 33, 'kolejny tweet', '2017-11-19 00:38:11'),
-(7, 33, 'just testin', '2017-11-19 00:38:47'),
-(8, 33, 'further testin', '2017-11-19 00:39:14'),
-(9, 33, 'ouch', '2017-11-19 00:39:21'),
-(13, 33, 'isit workin?', '2017-11-19 00:46:43'),
-(14, 33, 'isit workin?', '2017-11-19 00:46:45'),
-(15, 33, 'dindo nuffin', '2017-11-19 00:46:58'),
-(16, 33, 'any better?', '2017-11-19 11:21:59'),
-(17, 33, 'sth new', '2017-11-19 11:39:57'),
-(18, 33, 'still testin', '2017-11-19 11:40:22'),
-(19, 33, '', '2017-11-19 12:37:52'),
-(20, 33, 'notempty', '2017-11-19 12:39:42'),
-(21, 33, '', '2017-11-19 12:46:12'),
-(22, 33, '', '2017-11-19 12:46:14'),
-(23, 33, '', '2017-11-19 12:46:38'),
-(24, 33, '', '2017-11-19 12:47:46'),
-(25, 33, 'still going?', '2017-11-19 13:32:47'),
 (26, 5, 'tweet innego usera', '2017-11-01 00:00:00'),
 (27, 33, 'test', '2017-11-20 22:12:52');
 
@@ -118,11 +92,11 @@ INSERT INTO `tweets` (`id`, `userID`, `text`, `creationDate`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `email` varchar(60) NOT NULL,
   `pass` char(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -131,7 +105,6 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `pass`) VALUES
 (3, 'tadam@spadam.pl', '$2y$11$pwHvK6DNjYRdoi4O9gJSq.M/FMoenUDtuQQAzhPmhDnugaB93qz5C'),
 (5, 'kadam@spadam.pl', '$2y$11$TqYtimhgISd7btf1jI3uUecIGdhwfF9Elm..QwNuGkbz2PsIuPIYS'),
-(6, 'testuje@wnocy.pl', '$2y$11$RNHAogm.9TAI/49soizdzetVMSYbwb6fqPUjDrq6OEfDewCLODe..'),
 (8, 'nowy@user.pl', '$2y$11$HmMTcH..qmBIbf8BTnqQg.bY.W/o3uS/sbErvwjypOLVbPVfNmy4u'),
 (33, 'test@123.pass', '$2y$11$JkZAjL9UpwOHZ04Xy/5A6.5zuPoONs0HBxKrlaLdSbkbgUeB4RKC2');
 
@@ -177,26 +150,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `tweets`
 --
 ALTER TABLE `tweets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
 --
 -- Constraints for dumped tables
 --
@@ -220,7 +189,6 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `tweets`
   ADD CONSTRAINT `tweetToUser` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

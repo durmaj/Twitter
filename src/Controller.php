@@ -207,6 +207,7 @@ class Controller
         DB::init();
         $message = Message::loadMessageByID(DB::$conn, $_GET['message']);
         $senderID = $message->getSenderID();
+        $receiverID = $message->getReceiverID();
 
         $html = "<h2>Message from: ".User::loadById(DB::$conn,$senderID)->getEmail()."</h2>";
         $html .= "<h3>Date: ".$message->getCreationDate()."</h3>";
@@ -214,10 +215,11 @@ class Controller
         $html .= $message->getText();
         $html .= "</span>";
 
-        return $html;
-
-
-        //TODO: validation
+        if ($receiverID == $_SESSION["user"]) {
+            return $html;
+        } else {
+            header('Location: /messages');
+        }
 
     }
 
